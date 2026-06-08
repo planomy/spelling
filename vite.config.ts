@@ -4,5 +4,9 @@ import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
   base: '/spelling/',
+  build: {
+    outDir: 'docs',
+    emptyOutDir: true,
+  },
   plugins: [react(), tailwindcss()],
 })

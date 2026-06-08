@@ -26,7 +26,9 @@ Open http://localhost:5173/spelling/
 
 https://planomy.github.io/spelling/
 
-Deployed automatically from `main` via GitHub Actions. In repo **Settings → Pages**, set **Source** to **GitHub Actions** (not “Deploy from branch”).
+Built files live in `docs/` on `main`. After code changes, run `npm run build` and commit the updated `docs/` folder.
+
+In repo **Settings → Pages**, set **Source** to **Deploy from a branch**, branch **main**, folder **`/docs`**.
 
 ## Word List Format
 
