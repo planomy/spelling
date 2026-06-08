@@ -26,7 +26,7 @@ export type IconSize = 'xs' | 'sm' | 'stat' | 'nav' | 'md' | 'lg' | 'xl' | 'hero
 const ICON_CONFIG: Record<IconSize, { slot: string; scale: string }> = {
   xs: { slot: 'h-5 w-5', scale: 'scale-[2.4]' },
   sm: { slot: 'h-7 w-7', scale: 'scale-[2.6]' },
-  stat: { slot: 'h-5 w-5', scale: 'scale-[1.85]' },
+  stat: { slot: 'h-6 w-6', scale: 'scale-[1.65]' },
   nav: { slot: 'h-8 w-8', scale: 'scale-[2.1]' },
   md: { slot: 'h-9 w-9', scale: 'scale-[2.8]' },
   lg: { slot: 'h-12 w-12', scale: 'scale-[2.5]' },

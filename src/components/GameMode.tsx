@@ -147,8 +147,8 @@ export function GameMode() {
         <div className="flex items-center gap-4">
           <span className="text-sm text-[var(--color-text-muted)]">Round {round + 1}</span>
           <span className="flex items-center gap-1.5 text-sm font-bold text-purple-300">
-            <span className="flex h-5 w-5 shrink-0 items-center justify-center overflow-hidden">
-              <AppIcon src={ICONS.flame} alt="" size="stat" />
+            <span className="flex h-6 w-6 shrink-0 items-center justify-center overflow-visible">
+              <AppIcon src={ICONS.flame} alt="" size="stat" className="-translate-y-px" />
             </span>
             {gameState.streak}
           </span>

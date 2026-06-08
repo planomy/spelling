@@ -15,7 +15,7 @@ export function ThemeToggle() {
             : 'text-purple-200/70 hover:text-white'
         }`}
       >
-        <span className="flex h-5 w-5 shrink-0 items-center justify-center overflow-hidden">
+        <span className="flex h-6 w-6 shrink-0 items-center justify-center overflow-visible">
           <AppIcon src={ICONS.sun} alt="" size="stat" />
         </span>
         Light
@@ -29,8 +29,8 @@ export function ThemeToggle() {
             : 'text-purple-200/70 hover:text-white'
         }`}
       >
-        <span className="flex h-5 w-5 shrink-0 items-center justify-center overflow-hidden">
-          <AppIcon src={ICONS.moon} alt="" size="stat" />
+        <span className="flex h-6 w-6 shrink-0 items-center justify-center overflow-visible">
+          <AppIcon src={ICONS.moon} alt="" size="stat" className="-translate-y-px" />
         </span>
         Dark
       </button>

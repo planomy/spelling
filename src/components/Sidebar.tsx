@@ -72,15 +72,15 @@ export function Sidebar() {
         <p className="text-2xl font-bold text-white">{gameState.score}</p>
         <div className="mt-2 flex gap-4">
           <span className="flex items-center gap-1.5">
-            <span className="flex h-5 w-5 shrink-0 items-center justify-center overflow-hidden">
-              <AppIcon src={ICONS.flame} alt="" size="stat" />
+            <span className="flex h-6 w-6 shrink-0 items-center justify-center overflow-visible">
+              <AppIcon src={ICONS.flame} alt="" size="stat" className="-translate-y-px" />
             </span>
             <span className="text-sm font-semibold text-white">{gameState.streak}</span>
             <span className="text-xs text-purple-200/70">streak</span>
           </span>
           <span className="flex items-center gap-1.5">
-            <span className="flex h-5 w-5 shrink-0 items-center justify-center overflow-hidden">
-              <AppIcon src={ICONS.star} alt="" size="stat" />
+            <span className="flex h-6 w-6 shrink-0 items-center justify-center overflow-visible">
+              <AppIcon src={ICONS.star} alt="" size="stat" className="-translate-y-px" />
             </span>
             <span className="text-sm font-semibold text-white">{gameState.bestStreak}</span>
             <span className="text-xs text-purple-200/70">best</span>
