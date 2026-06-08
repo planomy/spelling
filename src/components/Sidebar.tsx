@@ -87,6 +87,10 @@ export function Sidebar() {
           </span>
         </div>
       </div>
+
+      <p className="mt-2 text-center text-[0.65rem] leading-none text-purple-200/50">
+        Created by Mr C 2026
+      </p>
     </aside>
   )
 }
