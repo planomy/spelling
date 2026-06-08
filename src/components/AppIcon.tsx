@@ -1,16 +1,18 @@
 import type { AppMode } from '../types'
 
+const BASE = import.meta.env.BASE_URL
+
 export const ICONS = {
-  logo: '/icons/logo.png',
-  title: '/icons/title.png',
-  chunk: '/icons/chunk.png',
-  test: '/icons/test.png',
-  unscramble: '/icons/unscramble.png',
-  game: '/icons/game.png',
-  star: '/icons/star.png',
-  moon: '/icons/moon.png',
-  sun: '/icons/sun.png',
-  flame: '/icons/flame.png',
+  logo: `${BASE}icons/logo.png`,
+  title: `${BASE}icons/title.png`,
+  chunk: `${BASE}icons/chunk.png`,
+  test: `${BASE}icons/test.png`,
+  unscramble: `${BASE}icons/unscramble.png`,
+  game: `${BASE}icons/game.png`,
+  star: `${BASE}icons/star.png`,
+  moon: `${BASE}icons/moon.png`,
+  sun: `${BASE}icons/sun.png`,
+  flame: `${BASE}icons/flame.png`,
 } as const
 
 export const MODE_ICONS: Record<AppMode, string> = {

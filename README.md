@@ -20,7 +20,13 @@ npm install
 npm run dev
 ```
 
-Open http://localhost:5173
+Open http://localhost:5173/spelling/
+
+## Live site
+
+https://planomy.github.io/spelling/
+
+Deployed automatically from `main` via GitHub Actions. In repo **Settings → Pages**, set **Source** to **GitHub Actions** (not “Deploy from branch”).
 
 ## Word List Format
 
