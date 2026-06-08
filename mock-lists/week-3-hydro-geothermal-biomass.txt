@@ -1,0 +1,13 @@
+# Week 3 — Hydro, Geothermal & Biomass (Year 5 Renewable Energy Unit)
+# Paste everything below the line into SpellQuest
+
+1. hydroelectric - electricity made by using the force of moving water
+2. dam - a wall built across a river to hold back water and create power
+3. geothermal - heat energy that comes from deep inside the Earth
+4. biomass - organic matter such as plants and waste used as a fuel source
+5. combustion - the process of burning something to release heat energy
+6. emission - gas or pollution released into the air, often from burning fuels
+7. reservoir - a large stored supply of water held behind a dam
+8. tidal - relating to the rise and fall of ocean tides, which can be used to generate power
+9. decompose - to break down naturally over time, as plants and food waste do
+10. methane - a gas produced when organic waste breaks down; it can be used as fuel
