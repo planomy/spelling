@@ -13,6 +13,7 @@ export const ICONS = {
   moon: `${BASE}icons/moon.png`,
   sun: `${BASE}icons/sun.png`,
   flame: `${BASE}icons/flame.png`,
+  lists: `${BASE}icons/lists.png`,
 } as const
 
 export const MODE_ICONS: Record<AppMode, string> = {

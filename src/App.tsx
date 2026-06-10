@@ -1,5 +1,7 @@
+import { useState } from 'react'
 import { Sidebar } from './components/Sidebar'
-import { WordListPanel } from './components/WordListPanel'
+import { ActiveListBar } from './components/ActiveListBar'
+import { ListManagerModal } from './components/ListManagerModal'
 import { ChunkMode } from './components/ChunkMode'
 import { TestMode } from './components/TestMode'
 import { UnscrambleMode } from './components/UnscrambleMode'
@@ -17,12 +19,14 @@ const MODE_TITLES = {
 export default function App() {
   const { mode, currentWords, weeks, currentWeek } = useSpelling()
   const info = MODE_TITLES[mode]
+  const [listManagerOpen, setListManagerOpen] = useState(false)
 
   return (
-    <div className="flex h-full flex-col gap-3 p-3 md:flex-row md:gap-5 md:p-5">
-      <Sidebar />
+    <>
+      <div className="flex h-full flex-col gap-3 p-3 md:flex-row md:gap-5 md:p-5">
+        <Sidebar onOpenListManager={() => setListManagerOpen(true)} />
 
-      <main className="flex min-h-0 flex-1 flex-col gap-3 overflow-hidden md:gap-5">
+        <main className="flex min-h-0 flex-1 flex-col gap-3 overflow-hidden md:gap-5">
         <header className="purple-gradient relative overflow-hidden rounded-2xl px-5 py-4 shadow-xl shadow-purple-900/30 md:px-8 md:py-6">
           <div className="relative z-10">
             <h2 className="text-2xl font-bold text-white md:text-3xl">{info.title}</h2>
@@ -43,7 +47,7 @@ export default function App() {
           )}
         </header>
 
-        <WordListPanel />
+        <ActiveListBar />
 
         <div
           className={`min-h-0 flex-1 pb-4 ${mode === 'chunk' ? 'overflow-hidden' : 'overflow-y-auto'}`}
@@ -54,6 +58,9 @@ export default function App() {
           {mode === 'game' && <GameMode />}
         </div>
       </main>
-    </div>
+      </div>
+
+      <ListManagerModal open={listManagerOpen} onClose={() => setListManagerOpen(false)} />
+    </>
   )
 }

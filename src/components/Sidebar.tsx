@@ -1,6 +1,7 @@
 import { useSpelling } from '../hooks/useSpellingStore'
 import type { AppMode } from '../types'
 import { AppIcon, ICONS, ModeIcon } from './AppIcon'
+import { MyListsButton } from './ListManagerModal'
 import { ThemeToggle } from './ThemeToggle'
 
 const MODES: { id: AppMode; label: string }[] = [
@@ -22,7 +23,7 @@ const NAV_ICON_BOX: Record<AppMode, string> = {
   game: 'h-10 w-11',
 }
 
-export function Sidebar() {
+export function Sidebar({ onOpenListManager }: { onOpenListManager: () => void }) {
   const { mode, setMode, gameState } = useSpelling()
 
   return (
@@ -47,7 +48,7 @@ export function Sidebar() {
           <button
             key={m.id}
             onClick={() => setMode(m.id)}
-            className={`flex items-center overflow-hidden rounded-xl py-3 pl-3 pr-4 text-left text-sm font-medium transition-all ${
+            className={`flex w-full items-center overflow-hidden rounded-xl py-3 pl-3 pr-4 text-left text-sm font-medium transition-all ${
               mode === m.id
                 ? 'bg-white/20 text-white shadow-lg backdrop-blur-sm'
                 : 'text-purple-100/80 hover:bg-white/10 hover:text-white'
@@ -61,6 +62,10 @@ export function Sidebar() {
             <span className="min-w-0 flex-1 pl-3">{m.label}</span>
           </button>
         ))}
+
+        <div className="border-t border-white/10 pt-3 md:pt-4">
+          <MyListsButton onClick={onOpenListManager} />
+        </div>
       </nav>
 
       <div className="mb-4">

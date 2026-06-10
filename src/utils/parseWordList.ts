@@ -1,5 +1,5 @@
-import type { WordEntry, WeekList } from '../types'
-import { WORDS_PER_WEEK } from '../types'
+import type { ListSize, WordEntry, WeekList } from '../types'
+import { DEFAULT_WORDS_PER_WEEK } from '../types'
 
 function stripNumbering(line: string): string {
   return line.replace(/^\s*(?:\d+[\.\)\:\-]\s*|\(\d+\)\s*|[\-•*]\s*)/, '').trim()
@@ -68,15 +68,22 @@ export function parseWordList(text: string): WordEntry[] {
   return entries
 }
 
-export function groupIntoWeeks(words: WordEntry[]): WeekList[] {
+export function groupIntoWeeks(
+  words: WordEntry[],
+  wordsPerWeek: ListSize = DEFAULT_WORDS_PER_WEEK,
+): WeekList[] {
   const weeks: WeekList[] = []
-  for (let i = 0; i < words.length; i += WORDS_PER_WEEK) {
+  for (let i = 0; i < words.length; i += wordsPerWeek) {
     weeks.push({
-      weekNumber: Math.floor(i / WORDS_PER_WEEK) + 1,
-      words: words.slice(i, i + WORDS_PER_WEEK),
+      weekNumber: Math.floor(i / wordsPerWeek) + 1,
+      words: words.slice(i, i + wordsPerWeek),
     })
   }
   return weeks
+}
+
+export function createListTemplate(count: ListSize): string {
+  return Array.from({ length: count }, (_, i) => `${i + 1}. word - definition`).join('\n')
 }
 
 export function scrambleWord(word: string): string {

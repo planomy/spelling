@@ -1,5 +1,6 @@
 import { createContext, useContext, useCallback, useMemo, useState, useEffect, type ReactNode } from 'react'
-import type { AppMode, GameState, TeacherList, WeekList, WordProgress } from '../types'
+import type { AppMode, GameState, ListSize, TeacherList, WeekList, WordProgress } from '../types'
+import { DEFAULT_WORDS_PER_WEEK } from '../types'
 import { generateId, groupIntoWeeks, parseWordList } from '../utils/parseWordList'
 
 const STORAGE_KEY = 'spellquest-data'
@@ -7,6 +8,7 @@ const STORAGE_KEY = 'spellquest-data'
 interface StoredData {
   rawText: string
   currentWeek: number
+  wordsPerWeek: ListSize
   progress: Record<string, WordProgress>
   teacherLists: TeacherList[]
   gameState: GameState
@@ -26,9 +28,11 @@ interface SpellingContextValue {
   setChunks: (wordKey: string, chunks: string[]) => void
   markTestPassed: (wordKey: string) => void
   markUnscramblePassed: (wordKey: string) => void
-  loadText: (text: string) => void
+  wordsPerWeek: ListSize
+  setWordsPerWeek: (size: ListSize) => void
+  loadText: (text: string, wordsPerWeek?: ListSize) => void
   teacherLists: TeacherList[]
-  saveTeacherList: (name: string) => void
+  saveTeacherList: (name: string, rawText?: string, wordsPerWeek?: ListSize) => void
   loadTeacherList: (id: string) => void
   deleteTeacherList: (id: string) => void
   gameState: GameState
@@ -55,27 +59,42 @@ const defaultGameState: GameState = {
 function loadStored(): StoredData {
   try {
     const raw = localStorage.getItem(STORAGE_KEY)
-    if (raw) return JSON.parse(raw) as StoredData
+    if (raw) return normalizeStored(JSON.parse(raw) as StoredData)
   } catch {
     /* ignore */
   }
   return {
     rawText: '',
     currentWeek: 1,
+    wordsPerWeek: DEFAULT_WORDS_PER_WEEK,
     progress: {},
     teacherLists: [],
     gameState: defaultGameState,
   }
 }
 
+function normalizeStored(data: StoredData): StoredData {
+  return {
+    ...data,
+    wordsPerWeek: data.wordsPerWeek ?? DEFAULT_WORDS_PER_WEEK,
+    teacherLists: (data.teacherLists ?? []).map((list) => ({
+      ...list,
+      wordsPerWeek: list.wordsPerWeek ?? DEFAULT_WORDS_PER_WEEK,
+    })),
+  }
+}
+
 const SpellingContext = createContext<SpellingContextValue | null>(null)
 
 export function SpellingProvider({ children }: { children: ReactNode }) {
-  const [stored, setStored] = useState<StoredData>(loadStored)
+  const [stored, setStored] = useState<StoredData>(() => normalizeStored(loadStored()))
   const [mode, setMode] = useState<AppMode>('chunk')
   const [selectedWordIndex, setSelectedWordIndex] = useState<number | null>(null)
 
-  const weeks = useMemo(() => groupIntoWeeks(parseWordList(stored.rawText)), [stored.rawText])
+  const weeks = useMemo(
+    () => groupIntoWeeks(parseWordList(stored.rawText), stored.wordsPerWeek),
+    [stored.rawText, stored.wordsPerWeek],
+  )
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(stored))
@@ -100,14 +119,20 @@ export function SpellingProvider({ children }: { children: ReactNode }) {
     setStored((prev) => ({ ...prev, ...patch }))
   }, [])
 
-  const loadText = useCallback((text: string) => {
+  const loadText = useCallback((text: string, wordsPerWeek?: ListSize) => {
     setStored((prev) => ({
       ...prev,
       rawText: text,
       currentWeek: 1,
+      ...(wordsPerWeek !== undefined ? { wordsPerWeek } : {}),
     }))
     setSelectedWordIndex(null)
   }, [])
+
+  const setWordsPerWeek = useCallback((size: ListSize) => {
+    updateStored({ wordsPerWeek: size })
+    setSelectedWordIndex(null)
+  }, [updateStored])
 
   const setCurrentWeek = useCallback((week: number) => {
     updateStored({ currentWeek: week })
@@ -157,12 +182,14 @@ export function SpellingProvider({ children }: { children: ReactNode }) {
   }, [])
 
   const saveTeacherList = useCallback(
-    (name: string) => {
-      if (!stored.rawText.trim()) return
+    (name: string, rawText?: string, wordsPerWeek?: ListSize) => {
+      const text = (rawText ?? stored.rawText).trim()
+      if (!text) return
       const list: TeacherList = {
         id: generateId(),
         name,
-        rawText: stored.rawText,
+        rawText: text,
+        wordsPerWeek: wordsPerWeek ?? stored.wordsPerWeek,
         createdAt: new Date().toISOString(),
       }
       setStored((prev) => ({
@@ -170,14 +197,19 @@ export function SpellingProvider({ children }: { children: ReactNode }) {
         teacherLists: [...prev.teacherLists, list],
       }))
     },
-    [stored.rawText],
+    [stored.rawText, stored.wordsPerWeek],
   )
 
   const loadTeacherList = useCallback((id: string) => {
     setStored((prev) => {
       const list = prev.teacherLists.find((l) => l.id === id)
       if (!list) return prev
-      return { ...prev, rawText: list.rawText, currentWeek: 1 }
+      return {
+        ...prev,
+        rawText: list.rawText,
+        wordsPerWeek: list.wordsPerWeek ?? DEFAULT_WORDS_PER_WEEK,
+        currentWeek: 1,
+      }
     })
     setSelectedWordIndex(null)
   }, [])
@@ -218,6 +250,8 @@ export function SpellingProvider({ children }: { children: ReactNode }) {
     setChunks,
     markTestPassed,
     markUnscramblePassed,
+    wordsPerWeek: stored.wordsPerWeek,
+    setWordsPerWeek,
     loadText,
     teacherLists: stored.teacherLists,
     saveTeacherList,

@@ -8,10 +8,13 @@ export interface WeekList {
   words: WordEntry[]
 }
 
+export type ListSize = 5 | 10 | 20
+
 export interface TeacherList {
   id: string
   name: string
   rawText: string
+  wordsPerWeek: ListSize
   createdAt: string
 }
 
@@ -30,4 +33,4 @@ export interface GameState {
   wordsCompleted: number
 }
 
-export const WORDS_PER_WEEK = 10
+export const DEFAULT_WORDS_PER_WEEK: ListSize = 10
